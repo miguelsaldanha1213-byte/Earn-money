@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Secure Money Assistant</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+        h1 { color: #2c3e50; font-size: 24px; }
+        p { color: #7f8c8d; }
+        input { width: 90%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        button { background-color: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: #219150; }
+        #resultado { margin-top: 20px; padding: 15px; background: #e8f6ed; border-radius: 8px; color: #2c3e50; text-align: left; display: none; white-space: pre-wrap; }
+        .loading { color: #f39c12; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🇬🇧 UK Money Assistant</h1>
+    <p>Pergunte como economizar ou ganhar dinheiro de forma segura no Reino Unido.</p>
+    
+    <input type="text" id="pergunta" placeholder="Ex: Melhores sites de freelancer no UK?">
+    <button onclick="perguntarIA()">Consultar IA</button>
+    
+    <div id="loading" class="loading">Consultando bases seguras...</div>
+    <div id="resultado"></div>
+</div>
+
+<script>
+    async function perguntarIA() {
+        const pergunta = document.getElementById('pergunta').value;
+        const resultadoDiv = document.getElementById('resultado');
+        const loading = document.getElementById('loading');
+
+        if (!pergunta) {
+            alert("Por favor, digite uma pergunta!");
+            return;
+        }
+
+        // Mostra o loading e esconde o resultado anterior
+        loading.style.display = 'block';
+        resultadoDiv.style.display = 'none';
+
+        // Instrução do sistema para garantir segurança
+        const systemPrompt = "Você é o UK Secure Money Assistant. Ajude brasileiros no Reino Unido a ganhar ou economizar dinheiro de forma 100% legal e segura. Não peça dados pessoais.";
+        
+        try {
+            const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(pergunta)}?system=${encodeURIComponent(systemPrompt)}`);
+            const data = await response.text();
+            
+            loading.style.display = 'none';
+            resultadoDiv.innerText = data;
+            resultadoDiv.style.display = 'block';
+        } catch (error) {
+            loading.style.display = 'none';
+            alert("Erro ao conectar com a IA. Tente novamente.");
+        }
+    }
+</script>
+
+</body>
+</html>
